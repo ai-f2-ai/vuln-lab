@@ -3,7 +3,7 @@
 set -u
 cd "$(dirname "$0")/.." && mkdir -p out
 have() { command -v "$1" >/dev/null 2>&1 || { echo "[salto] $1 non installato"; return 1; }; }
-have semgrep  && semgrep scan --config auto --sarif -o out/semgrep.sarif projects/
+have semgrep  && semgrep scan --config p/default --metrics=off --sarif -o out/semgrep.sarif projects/
 have gitleaks && gitleaks detect --source . --report-format sarif --report-path out/gitleaks.sarif   # include la storia git
 have trivy    && trivy fs --scanners vuln,secret,misconfig,license --format sarif -o out/trivy-fs.sarif .
 have checkov  && checkov -d . --framework terraform,kubernetes,dockerfile,github_actions -o sarif --output-file-path out/
