@@ -1,0 +1,11 @@
+# Le porte sono esposte solo in locale.
+services:
+  flask-shop:
+    build: ./projects/01-flask-shop
+    ports: ["127.0.0.1:5000:5000"]
+  express-blog:
+    build: ./projects/02-express-blog
+    ports: ["127.0.0.1:3000:3000"]
+  spring-bank:
+    build: ./projects/03-spring-bank
+    ports: ["127.0.0.1:8080:8080"]

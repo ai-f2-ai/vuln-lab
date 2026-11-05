@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: express-blog
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: express-blog }
+  template:
+    metadata:
+      labels: { app: express-blog }
+    spec:
+      hostNetwork: true
+      containers:
+        - name: web
+          image: express-blog:latest
+          securityContext:
+            privileged: true
+            runAsUser: 0
+            allowPrivilegeEscalation: true
+          env:
+            - name: DB_PASSWORD
+              value: "rootpw123"
+          volumeMounts:
+            - { name: host, mountPath: /host }
+      volumes:
+        - name: host
+          hostPath: { path: / }

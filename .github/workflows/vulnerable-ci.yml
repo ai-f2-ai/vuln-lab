@@ -1,0 +1,17 @@
+# VULN-C01..C04: workflow volutamente insicuro
+name: build
+on:
+  pull_request_target:
+permissions: write-all
+env:
+  DEPLOY_TOKEN: ghp_Z8xK1mQ4vR7tYbN2cL5wDpS9aHjE6uGoXiT3
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: some-org/unpinned-action@main
+      - run: echo "Titolo PR: ${{ github.event.pull_request.title }}"
+      - run: curl -sSL https://example.com/install.sh | bash
