@@ -10,7 +10,7 @@
 ## 🎯 Scopo
 
 Uno scanner di sicurezza (SAST, SCA, secret scanning, IaC, DAST) è utile solo se si sa cosa riesce a trovare e cosa gli sfugge.
-`vuln-lab` offre un **banco di prova con la soluzione già scritta**: ogni vulnerabilità è dichiarata in [`EXPECTED.md`](EXPECTED.md) e marcata nel codice con un commento `VULN-xx`.
+`vuln-lab` offre un **banco di prova con la soluzione già scritta**: ogni vulnerabilità è dichiarata in [`EXPECTED.md`](EXPECTED.md); quelle nel codice sorgente sono marcate con un commento `VULN-xx` (configurazioni e dipendenze, che non hanno marcatore, sono solo in `EXPECTED.md`).
 
 Si può usare per:
 
@@ -57,6 +57,7 @@ bandit -r projects/01-flask-shop
 ### 2. Scansioni dinamiche (DAST)
 
 ```bash
+(cd projects/03-spring-bank && mvn -q package)   # il Dockerfile copia target/spring-bank-vuln-1.0.0.jar
 docker compose up --build       # porte esposte solo su 127.0.0.1
 zap-baseline.py -t http://127.0.0.1:5000
 nuclei -u http://127.0.0.1:3000
@@ -66,7 +67,7 @@ Le applicazioni ascoltano su `5000` (Flask), `3000` (Express) e `8080` (Spring).
 
 ### 3. Confronto con le attese
 
-1. Contare le vulnerabilità dichiarate: `grep -rn "VULN-" projects .github`
+1. Contare i marcatori distinti: `grep -rhoE "VULN-[A-Z][0-9]+" projects .github | sort -u | wc -l` (attesi 45)
 2. Aprire [`EXPECTED.md`](EXPECTED.md) e confrontare, categoria per categoria, con i report in `out/`.
 3. Annotare per ogni strumento: **trovate / mancate / segnalazioni in più**.
 
